@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import seabro.seabro_web.domain.Reservation;
 import seabro.seabro_web.domain.Schedule;
-import seabro.seabro_web.dto.*;
 import seabro.seabro_web.repository.Reservation.ReservationRequestDto;
 import seabro.seabro_web.repository.Reservation.ReservationResponseDto;
-import seabro.seabro_web.repository.ReservationRepository;
-import seabro.seabro_web.repository.ScheduleRepository;
+import seabro.seabro_web.repository.Reservation.ReservationRepository;
+import seabro.seabro_web.repository.schedule.ScheduleDto;
+import seabro.seabro_web.repository.schedule.ScheduleRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,22 +21,23 @@ public class ReservationService {
     private final ScheduleRepository scheduleRepository;
     private final ReservationRepository reservationRepository;
 
-    public List<ScheduleQueryResponseDto> getAvailableSchedules(Long shipId, String dateString) {
+    public List<ScheduleDto> getAvailableSchedules(Long shipId, String dateString) {
         LocalDate date = LocalDate.parse(dateString);
         List<Schedule> schedules = scheduleRepository.findByShip_ShipIdAndDate(shipId, date);
 
         return schedules.stream().map(s ->
-                new ScheduleQueryResponseDto(
-                        s.getScheduleId(),
-                        s.getDate().toString(),
-                        s.getPort(),
-                        s.getScale(),
-                        s.getTotalSeat(),
-                        s.getRemainSeat(),
-                        s.getNotice(),
-                        s.getPrice()
+                new ScheduleDto(
+                        s.getShip().getShipName(),    // shipName: String
+                        s.getDate(),                  // date: LocalDateTime
+                        s.getScale(),                 // scale: Integer
+                        s.getPort(),                  // port: String
+                        s.getTotalSeat(),             // totalSeat: Integer
+                        s.getRemainSeat(),            // remainSeat: Integer
+                        s.getNotice(),                // notice: String
+                        s.getFishType()               // fishType: String
                 )
         ).collect(Collectors.toList());
+
     }
 
     public ReservationResponseDto reserve(ReservationRequestDto dto) {

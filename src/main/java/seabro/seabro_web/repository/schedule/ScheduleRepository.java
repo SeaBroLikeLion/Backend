@@ -20,4 +20,8 @@ where (:fishType is null or s.fishType = :fishType)
     List<Schedule> search(
             @Param("fishType") String fishType,
             @Param("local")    String port);
+
+    List<Schedule> findByShip_ShipIdAndDate(Long shipId, java.time.LocalDate date);
+
 }
+

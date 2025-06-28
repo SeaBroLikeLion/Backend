@@ -6,7 +6,7 @@ spring:
     name: side-project-blog
 
   datasource:
-    url: jdbc:h2:file:./data/seabro-db   # H2 In-Memory DB  =>  jdbc:h2:mem:test
+    url: jdbc:h2:mem:seabro-db   # H2 In-Memory DB  =>  jdbc:h2:mem:test
     driver-class-name: org.h2.Driver
     username: soo
     password: 717

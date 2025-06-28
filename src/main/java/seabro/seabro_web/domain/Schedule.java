@@ -27,6 +27,7 @@ public class Schedule {
     private Integer remainSeat;
     private String notice;
     private String fishType;
+    private Integer price;
 
     public Schedule() {
     }

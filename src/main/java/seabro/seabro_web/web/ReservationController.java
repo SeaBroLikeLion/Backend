@@ -4,27 +4,25 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import seabro.seabro_web.domain.Reservation;
-import seabro.seabro_web.dto.*;
-import seabro.seabro_web.repository.ReservationRepository;
+import seabro.seabro_web.repository.Reservation.ReservationRepository;
+import seabro.seabro_web.repository.schedule.ScheduleDto;
 import seabro.seabro_web.service.ReservationService;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/reservations")
+@RequestMapping("/ships")
 public class ReservationController {
 
-    private final ReservationRepository reservationRepository;
+    private final ReservationService reservationService;
 
-    @PostMapping
-    public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
-        Reservation saved = reservationRepository.save(reservation);
-        return ResponseEntity.ok(saved);
-    }
+    @GetMapping("/{shipId}/reservations")
+    public ResponseEntity<List<ScheduleDto>> getReservations(
+            @PathVariable Long shipId,
+            @RequestParam String date) {
 
-    @GetMapping
-    public List<Reservation> getAllReservations() {
-        return reservationRepository.findAll();
+        List<ScheduleDto> schedules = reservationService.getAvailableSchedules(shipId, date);
+        return ResponseEntity.ok(schedules);
     }
 }
