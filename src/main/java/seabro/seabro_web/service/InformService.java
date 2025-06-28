@@ -8,7 +8,6 @@ import seabro.seabro_web.domain.Ship;
 import seabro.seabro_web.dto.AddBoardRequest;
 import seabro.seabro_web.dto.BoardAllResponse;
 import seabro.seabro_web.dto.BoardResponse;
-import seabro.seabro_web.repository.BoardRepository;
 import seabro.seabro_web.repository.InformRepository;
 import seabro.seabro_web.repository.ShipRepository;
 

@@ -7,7 +7,6 @@ import seabro.seabro_web.dto.AddBoardRequest;
 import seabro.seabro_web.dto.ApiResponse;
 import seabro.seabro_web.dto.BoardAllResponse;
 import seabro.seabro_web.dto.BoardResponse;
-import seabro.seabro_web.service.BoardService;
 import seabro.seabro_web.service.InformService;
 
 import java.util.List;

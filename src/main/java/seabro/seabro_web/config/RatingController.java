@@ -47,7 +47,6 @@ public class RatingController {
 
         RatingResponse responseData = ratingService.updateRating(shipId, reviewId, request);
 
-        // 성공 시 200 OK 상태 코드와 함께 응답
         ApiResponse apiResponse = new ApiResponse(true, 200, "후기가 성공적으로 수정되었습니다.", responseData);
         return ResponseEntity.ok(apiResponse);
     }
