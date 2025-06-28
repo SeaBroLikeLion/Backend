@@ -9,6 +9,7 @@ import seabro.seabro_web.repository.schedule.ScheduleRepository;
 import seabro.seabro_web.repository.schedule.ScheduleSearchCond;
 import seabro.seabro_web.repository.schedule.ScheduleDto;
 import seabro.seabro_web.repository.ship.ShipDto;
+import seabro.seabro_web.repository.ship.ShipRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +21,15 @@ import java.util.Optional;
 public class ScheduleServiceImpl implements ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+    private final ShipRepository shipRepository;
 
     @Override
-    public Schedule saveSchedule(ScheduleDto scheduleDto) {
+    public Schedule saveSchedule(ScheduleDto scheduleDto, Long shipId) {
         Schedule schedule = new Schedule();
 
         copyDtoToSchedule(scheduleDto, schedule);
-
+        Optional<Ship> ship = shipRepository.findById(shipId);
+        schedule.setShip(ship.get());
         return scheduleRepository.save(schedule);
     }
 
