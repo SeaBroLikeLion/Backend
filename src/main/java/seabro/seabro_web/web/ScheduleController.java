@@ -36,8 +36,9 @@ public class ScheduleController {
     }
 
     @PutMapping("/{scheduleId}")
-    public ResponseEntity<ScheduleDto> updateSchedule(ScheduleDto updateParam, @PathVariable Long scheduleId) {
-        return ResponseEntity.ok().body(scheduleService.updateSchedule(scheduleId, updateParam););
+    public ResponseEntity<Void> updateSchedule(ScheduleDto updateParam, @PathVariable Long scheduleId) {
+        scheduleService.updateSchedule(scheduleId, updateParam);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{scheduleId}")

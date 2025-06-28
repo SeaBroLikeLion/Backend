@@ -35,8 +35,8 @@ public class ShipController {
     }
 
     @PutMapping("/{shipId}")
-    public ResponseEntity<ShipDto> updateShip(ShipDto updateParam, @PathVariable Long shipId) {
-        return ResponseEntity.ok().body(shipService.updateShip(shipId, updateParam));
+    public ResponseEntity<Void> updateShip(ShipDto updateParam, @PathVariable Long shipId) {
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{shipId}")
