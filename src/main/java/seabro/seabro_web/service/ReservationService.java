@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import seabro.seabro_web.domain.Reservation;
 import seabro.seabro_web.domain.Schedule;
 import seabro.seabro_web.dto.*;
+import seabro.seabro_web.repository.Reservation.ReservationRequestDto;
+import seabro.seabro_web.repository.Reservation.ReservationResponseDto;
 import seabro.seabro_web.repository.ReservationRepository;
 import seabro.seabro_web.repository.ScheduleRepository;
 

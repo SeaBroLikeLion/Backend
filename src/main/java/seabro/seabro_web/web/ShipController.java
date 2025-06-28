@@ -1,27 +1,47 @@
 package seabro.seabro_web.web;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-import seabro.seabro_web.domain.Ship;
-import seabro.seabro_web.repository.ShipRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import seabro.seabro_web.repository.schedule.ScheduleDto;
+import seabro.seabro_web.repository.schedule.ScheduleSearchCond;
+import seabro.seabro_web.repository.ship.ShipDto;
+import seabro.seabro_web.service.ScheduleService;
+import seabro.seabro_web.service.ShipService;
 
 import java.util.List;
 
-@RestController
+@Slf4j
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/ships")
 public class ShipController {
 
-    private final ShipRepository shipRepository;
+    private final ShipService shipService;
+    private final ScheduleService scheduleService;
+
+    @GetMapping
+    public ResponseEntity<List<ScheduleDto>> viewSchedules(ScheduleSearchCond cond) {
+        List<ScheduleDto> schedules = scheduleService.findSchedules(cond);
+
+        return ResponseEntity.ok(schedules);
+    }
 
     @PostMapping
-    public ResponseEntity<Ship> createShip(@RequestBody Ship ship) {
-        Ship saved = shipRepository.save(ship);
-        return ResponseEntity.ok(saved);
+    public ResponseEntity<ShipDto> addShip(ShipDto shipDto) {
+        return ResponseEntity.ok().body(shipService.saveShip(shipDto));
     }
-    @GetMapping
-    public List<Ship> getAllShips() {
-        return shipRepository.findAll();
+
+    @PutMapping("/{shipId}")
+    public ResponseEntity<Void> updateShip(ShipDto updateParam, @PathVariable Long shipId) {
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{shipId}")
+    public ResponseEntity<Void> deleteShip(@PathVariable Long shipId) {
+        shipService.deleteShip(shipId);
+        return ResponseEntity.noContent().build();
     }
 }

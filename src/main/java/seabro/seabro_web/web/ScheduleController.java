@@ -1,47 +1,49 @@
 package seabro.seabro_web.web;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import seabro.seabro_web.domain.Schedule;
-import seabro.seabro_web.dto.ScheduleQueryRequestDto;
-import seabro.seabro_web.dto.ScheduleQueryResponseDto;
-import seabro.seabro_web.repository.ScheduleRepository;
+import seabro.seabro_web.repository.schedule.ScheduleDto;
+import seabro.seabro_web.repository.ship.ShipDto;
+import seabro.seabro_web.service.ScheduleService;
+import seabro.seabro_web.service.ShipService;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
-@RestController
+@Slf4j
+@Controller
 @RequiredArgsConstructor
-@RequestMapping("/schedules")
+@RequestMapping("/ships/{shipId}/schedules")
 public class ScheduleController {
 
-    private final ScheduleRepository scheduleRepository;
+    private final ScheduleService scheduleService;
+    private final ShipService shipService;
 
-    @PostMapping("/search")
-    public ResponseEntity<List<ScheduleQueryResponseDto>> searchSchedules(@RequestBody ScheduleQueryRequestDto requestDto) {
-        // String → LocalDate 변환
-        LocalDate date = LocalDate.parse(requestDto.getDate());
-        Long shipId = requestDto.getShipId();
+    @PostMapping
+    public ResponseEntity<ScheduleDto> addSchedule(@PathVariable Long shipId, @RequestBody ScheduleDto scheduleDto) {
+        Schedule schedule = scheduleService.saveSchedule(scheduleDto, shipId);
+        return ResponseEntity.ok().body(new ScheduleDto(schedule));
+    }
 
-        List<Schedule> schedules = scheduleRepository.findByShip_ShipIdAndDate(shipId, date);
+    @GetMapping("/{scheduleId}")
+    public ResponseEntity<ScheduleDto> getSchedule(@PathVariable Long shipId, @PathVariable Long scheduleId) {
+        Optional<ScheduleDto> schedule = scheduleService.findSchedule(scheduleId);
+        return ResponseEntity.ok().body(schedule.get());
+    }
 
-        List<ScheduleQueryResponseDto> responseDtos = schedules.stream()
-                .map(s -> new ScheduleQueryResponseDto(
-                        s.getScheduleId(),
-                        s.getDate().toString(),
-                        s.getPort(),
-                        s.getScale(),
-                        s.getTotalSeat(),
-                        s.getRemainSeat(),
-                        s.getNotice(),
-                        s.getPrice()
-                ))
-                .toList();
+    @PutMapping("/{scheduleId}")
+    public ResponseEntity<Void> updateSchedule(ScheduleDto updateParam, @PathVariable Long scheduleId) {
+        scheduleService.updateSchedule(scheduleId, updateParam);
+        return ResponseEntity.noContent().build();
+    }
 
-        return ResponseEntity.ok(responseDtos);
+    @DeleteMapping("/{scheduleId}")
+    public ResponseEntity<Void> deleteShip(@PathVariable Long scheduleId) {
+        scheduleService.deleteSchedule(scheduleId);
+        return ResponseEntity.noContent().build();
     }
 }

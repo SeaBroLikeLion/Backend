@@ -1,16 +1,15 @@
 package seabro.seabro_web.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.Date;
 
+@Data
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Schedule {
 
     @Id
@@ -21,20 +20,14 @@ public class Schedule {
     @JoinColumn(name = "ship_id")
     private Ship ship;
 
-    private LocalDate date;
-
-    private int scale;
-
+    private LocalDateTime date;
+    private Integer scale;
     private String port;
-
-    private int totalSeat;
-
-    private int remainSeat;
-
+    private Integer totalSeat;
+    private Integer remainSeat;
     private String notice;
+    private String fishType;
 
-    private int price;
-
-    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
-    private List<Reservation> reservations;
+    public Schedule() {
+    }
 }

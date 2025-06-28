@@ -1,4 +1,4 @@
-package seabro.seabro_web.dto;
+package seabro.seabro_web.repository.Reservation;
 
 import lombok.Getter;
 
