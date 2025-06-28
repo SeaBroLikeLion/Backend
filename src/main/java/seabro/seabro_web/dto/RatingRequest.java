@@ -12,7 +12,7 @@ import seabro.seabro_web.domain.Ship;
 @Getter
 @NoArgsConstructor
 public class RatingRequest {
-    
+
     private String password;
 
     private String content;
@@ -23,7 +23,6 @@ public class RatingRequest {
     public Rating toEntity(Ship ship) {
         return Rating.builder()
                 .ship(ship)
-                .password(this.password)
                 .content(this.content)
                 .rate(this.rate)
                 .build();
