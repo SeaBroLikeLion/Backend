@@ -1,0 +1,27 @@
+server:
+  port: 80  # 내장 톰캣 포트번호
+
+spring:
+  application:
+    name: side-project-blog
+
+  datasource:
+    url: jdbc:h2:file:./data/seabro-db   # H2 In-Memory DB  =>  jdbc:h2:mem:test
+    driver-class-name: org.h2.Driver
+    username: soo
+    password: 717
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+        show_sql: true
