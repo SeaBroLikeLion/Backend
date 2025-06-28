@@ -6,12 +6,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import seabro.seabro_web.domain.Rating;
 import seabro.seabro_web.domain.Ship;
-import seabro.seabro_web.dto.DeleteRatingRequest;
-import seabro.seabro_web.dto.RatingRequest;
-import seabro.seabro_web.dto.RatingResponse;
-import seabro.seabro_web.dto.UpdateRatingRequest;
+import seabro.seabro_web.dto.*;
 import seabro.seabro_web.repository.RatingRepository;
 import seabro.seabro_web.repository.ShipRepository;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +46,14 @@ public class RatingService {
         rating.update(request.getContent(), request.getRate());
 
         return RatingResponse.of(rating);
+    }
+
+
+    public List<RatingAllResponse> findAllRatingsByShip(Long shipId) {
+        List<Rating> ratingList = ratingRepository.findByShipIdOrderByIdDesc(shipId);
+        return ratingList.stream()
+                .map(RatingAllResponse::from) // 각 Rating을 RatingListResponse로 변환
+                .toList();
     }
 
 }

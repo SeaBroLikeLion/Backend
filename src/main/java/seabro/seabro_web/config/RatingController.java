@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import seabro.seabro_web.dto.*;
 import seabro.seabro_web.service.RatingService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/ships/{shipId}/reviews")
 public class RatingController {
@@ -48,6 +50,14 @@ public class RatingController {
         RatingResponse responseData = ratingService.updateRating(shipId, reviewId, request);
 
         ApiResponse apiResponse = new ApiResponse(true, 200, "후기가 성공적으로 수정되었습니다.", responseData);
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse> getRatingList(@PathVariable Long shipId) {
+        List<RatingAllResponse> responseData = ratingService.findAllRatingsByShip(shipId);
+
+        ApiResponse apiResponse = new ApiResponse(true, 200, "후기 목록 조회 성공", responseData);
         return ResponseEntity.ok(apiResponse);
     }
 
